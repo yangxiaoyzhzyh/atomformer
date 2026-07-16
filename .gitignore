@@ -27,5 +27,9 @@ data/*.json
 # Office temp files
 ~$*
 
+# Paper files (not public until published)
+paper_draft_*.md
+preprint.docx
+
 # Jupyter
 .ipynb_checkpoints/
