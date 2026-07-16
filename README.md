@@ -26,10 +26,10 @@ atomformer_paper/
 │   ├── eval_cls_gs.py        # Classification model GS test (AUROC + R@1)
 │   └── supporting_material_auroc.md  # Full per-group AUROC table
 ├── data/
-│   ├── tgsc_train_bge.jsonl  # TGSC monomer training (3,434 compounds)
+│   ├── tgsc_train_bge.jsonl  # TGSC monomer training (3,430 compounds)
 │   ├── tgsc_test_bge.jsonl   # TGSC monomer test (236 compounds)
-│   ├── blender_train.jsonl   # Blender pair training (553,160 pairs)
-│   ├── blender_test.jsonl    # Blender pair test (6,305 pairs)
+│   ├── blender_train.jsonl   # Blender pair training (552,816 pairs)
+│   ├── blender_test.jsonl    # Blender pair test (6,260 pairs)
 │   ├── gs_train_nosweet.jsonl  # GoodScents training (classification)
 │   ├── gs_test_nosweet.jsonl   # GoodScents test (classification)
 │   └── odor_group_1024dim_cache.json  # Odor group → BGE-M3 embedding
