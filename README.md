@@ -118,4 +118,4 @@ git lfs pull
 
 ## License
 
-MIT
+GNU Affero General Public License v3.0 (AGPL-3.0) — see [LICENSE](LICENSE) for details.
