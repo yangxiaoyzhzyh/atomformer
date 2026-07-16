@@ -1,0 +1,31 @@
+# Checkpoints / model weights
+checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (sensitive/large)
+data/*.jsonl
+data/*.json
+
+# Office temp files
+~$*
+
+# Jupyter
+.ipynb_checkpoints/
