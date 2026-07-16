@@ -1,6 +1,3 @@
-# Checkpoints / model weights
-checkpoints/
-
 # Python
 __pycache__/
 *.py[cod]
