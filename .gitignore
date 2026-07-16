@@ -20,9 +20,9 @@ env/
 .DS_Store
 Thumbs.db
 
-## Data (sensitive/large)
-#data/*.jsonl
-#data/*.json
+# Data (sensitive/large)
+data/*.jsonl
+data/*.json
 
 # Office temp files
 ~$*
