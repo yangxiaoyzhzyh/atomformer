@@ -46,7 +46,7 @@ atomformer_paper/
 │   ├── model_gin_cls_best.pt       # GIN-only classification (GS AUROC=0.8326)
 │   ├── model_nosweet_cls135_auc_best.pt  # GIN+TFM+cls (BL AUROC=0.7847)
 │   ├── model_gin135_nosweet.pt     # GIN135 Sisson replication
-│   └── model_he_best.pt           # Excess enthalpy ensemble (R=0.9367)
+│   └── model_he_best.pt           # Excess enthalpy best single-seed
 └── data/clean_descriptions.py  # Data preprocessing utilities
     data/encode_descriptions.py
     data/split_data.py
