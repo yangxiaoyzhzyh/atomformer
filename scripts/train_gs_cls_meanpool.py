@@ -94,7 +94,7 @@ def build(smi):
 
 BASE=os.path.dirname(os.path.abspath(__file__))
 print('Loading data...')
-dt=lambda p:os.path.join(BASE,'data/processed/goodscents',p)
+dt=lambda p:os.path.join(BASE, '..', 'data', p)
 train_data=[]
 for line in open(dt('gs_train_nosweet.jsonl')):
     r=json.loads(line);y=text2y(r['text'])

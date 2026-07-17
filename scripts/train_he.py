@@ -14,7 +14,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Load compound SMILES
 cmp_smiles = {}
-with open(BASE + '/HE_compounds.csv') as f:
+with open(os.path.join(BASE, '..', 'data', 'HE', 'HE_compounds.csv')) as f:
     reader = csv.DictReader(f)
     for r in reader:
         cmp_smiles[int(float(r['compound_id']))] = r['smiles']
@@ -87,7 +87,7 @@ def train_seed(seed):
 
     # Load data — use official CheMixHub Fold 0 split (no random shuffling)
     train_data = []
-    df = pd.read_csv(BASE + '/HE_train.csv')
+    df = pd.read_csv(os.path.join(BASE, '..', 'data', 'HE', 'HE_train.csv'))
     for _, r in df.iterrows():
         cmp_ids = eval(r['cmp_ids']); mol_fracs = eval(r['cmp_mole_fractions'])
         d = build(cmp_ids)
@@ -97,7 +97,7 @@ def train_seed(seed):
         train_data.append(d)
 
     test_data = []
-    df = pd.read_csv(BASE + '/HE_test.csv')
+    df = pd.read_csv(os.path.join(BASE, '..', 'data', 'HE', 'HE_test.csv'))
     for _, r in df.iterrows():
         cmp_ids = eval(r['cmp_ids']); mol_fracs = eval(r['cmp_mole_fractions'])
         d = build(cmp_ids)
@@ -147,7 +147,7 @@ def train_seed(seed):
 
         if r > best_r:
             best_r, best_ep = r, ep
-            torch.save(m.state_dict(), f"{BASE}/model_he_seed{seed}.pt")
+            torch.save(m.state_dict(), os.path.join(BASE, '..', 'checkpoints', f"model_he_seed{seed}.pt"))
 
     print(f'  >>> Seed {seed} best: Ep{best_ep} R={best_r:.4f}')
     return best_r, best_ep

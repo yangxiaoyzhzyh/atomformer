@@ -83,7 +83,7 @@ def fw(t): return t.strip().split()[0].strip(',;.')
 # ─── 数据 ───
 print('Loading monomer training...')
 data = []
-for line in open(os.path.join(BASE, 'tgsc_train_bge.jsonl')):
+for line in open(os.path.join(BASE, '..', 'data', 'tgsc_train_bge.jsonl')):
     r = json.loads(line)
     d = build([r['smiles']])
     if d: d.y = F.normalize(torch.tensor(r['embedding']), dim=0); data.append(d)
@@ -92,13 +92,13 @@ print(f'  Monomer: {gs_n}')
 
 # Blender
 print('Loading blender training...')
-with open(os.path.join(BASE, 'odor_group_1024dim_cache.json')) as f:
+with open(os.path.join(BASE, '..', 'data', 'odor_group_1024dim_cache.json')) as f:
     gd = json.load(f); gn = list(gd.keys())
     gv = F.normalize(torch.tensor([gd[n] for n in gn]), dim=1).to(DEVICE)
 gi = {n: i for i, n in enumerate(gn)}
 
 bl_n = 0
-for line in open(os.path.join(BASE, 'blender_train.jsonl')):
+for line in open(os.path.join(BASE, '..', 'data', 'blender_train.jsonl')):
     r = json.loads(line); g = r['odor_group'].rstrip(', ')
     if g not in gi: continue
     d = build([r['smiles_a'], r['smiles_b']])
@@ -109,7 +109,7 @@ print(f'  Total: {len(data)}')
 # ─── 评估 ───
 print('Loading monomer test...')
 mono_test = []; mono_test_desc = []
-for line in open(os.path.join(BASE, 'tgsc_test_bge.jsonl')):
+for line in open(os.path.join(BASE, '..', 'data', 'tgsc_test_bge.jsonl')):
     r = json.loads(line)
     d = build([r['smiles']])
     if d: mono_test.append(d); mono_test_desc.append(r['description'])
@@ -117,7 +117,7 @@ print(f'  Monomer test: {len(mono_test)}')
 
 # Retrieval library from TGSC training set
 train_descs = []; train_embs = []
-for line in open(os.path.join(BASE, 'tgsc_train_bge.jsonl')):
+for line in open(os.path.join(BASE, '..', 'data', 'tgsc_train_bge.jsonl')):
     r = json.loads(line)
     train_descs.append(r['description']); train_embs.append(r['embedding'])
 lib_embs = F.normalize(torch.tensor(train_embs), dim=1)
@@ -126,7 +126,7 @@ print(f'  Library: {len(train_descs)} descriptions')
 # Blender test
 print('Loading blender test...')
 bl_test = []
-for line in open(os.path.join(BASE, 'blender_test.jsonl')):
+for line in open(os.path.join(BASE, '..', 'data', 'blender_test.jsonl')):
     bl_test.append(json.loads(line))
 print(f'  Blender test: {len(bl_test)}')
 
@@ -180,7 +180,7 @@ for ep in range(TOTAL_EPOCHS):
     bl_auc, n_groups = eval_bl_auroc(m)
 
     # Save every epoch
-    ckpt = os.path.join(BASE, f'model_tgsc_bl_ep{ep}.pt')
+    ckpt = os.path.join(BASE, '..', 'checkpoints', f'model_tgsc_bl_ep{ep}.pt')
     torch.save(m.state_dict(), ckpt)
 
     improved = bl_auc > best_auc

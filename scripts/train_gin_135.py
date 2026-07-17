@@ -96,11 +96,11 @@ def build(smi):
     return GData(x=x,edge_index=torch.tensor(g['ei']))
 
 print('Loading...')
-train_data=[D for line in open(os.path.join(BASE,'data/processed/goodscents/gs_train_nosweet.jsonl'))
+train_data=[D for line in open(os.path.join(BASE, '..', 'data', 'gs_train_nosweet.jsonl'))
     if (r:=json.loads(line)) and (y:=text2y(r['text'])) is not None and (d:=build(r['smiles'])) is not None
     for D in [(setattr(d,'y',y),d)[1]]]
 print(f'Train: {len(train_data)}')
-ev_data=[D for line in open(os.path.join(BASE,'data/processed/goodscents/gs_test_nosweet.jsonl'))
+ev_data=[D for line in open(os.path.join(BASE, '..', 'data', 'gs_test_nosweet.jsonl'))
     if (r:=json.loads(line)) and (y:=text2y(r['text'])) is not None and (d:=build(r['smiles'])) is not None
     for D in [(setattr(d,'y',y),d)[1]]]
 print(f'Test: {len(ev_data)}')
@@ -127,5 +127,5 @@ for ep in range(30):
         az=torch.cat(az).numpy();ay=torch.stack(ay).numpy()
     aucs=[roc_auc_score(ay[:,i],az[:,i]) for i in range(N) if 0<ay[:,i].sum()<len(ay)]
     ma=np.mean(aucs)
-    torch.save(m.state_dict(),os.path.join(BASE,'checkpoints',f'model_gin_cls_ep{ep}.pt'))
+    torch.save(m.state_dict(),os.path.join(BASE, '..', 'checkpoints',f'model_gin_cls_ep{ep}.pt'))
     print(f'Ep{ep:2d} | loss={al:.6f} | AUROC={ma:.4f} ({len(aucs)}/{N})')

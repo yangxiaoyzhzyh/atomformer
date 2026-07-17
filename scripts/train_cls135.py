@@ -127,7 +127,7 @@ def build_d(smis, target=None):
 print('加载数据...')
 all_data = []
 
-with open(BASE + '/data/processed/goodscents/gs_train_nosweet.jsonl') as f:
+with open(os.path.join(BASE, '..', 'data', 'gs_train_nosweet.jsonl')) as f:
     for line in f:
         r = json.loads(line)
         y = text2y(r['text'])
@@ -136,7 +136,7 @@ with open(BASE + '/data/processed/goodscents/gs_train_nosweet.jsonl') as f:
         if d: all_data.append((d, 1))
 print(f'单体: {sum(1 for _, m in all_data if m)}')
 
-with open(BASE + '/data/processed/blender/blender_train_nosweet.jsonl') as f:
+with open(os.path.join(BASE, '..', 'data', 'blender_train_nosweet.jsonl')) as f:
     for line in f:
         r = json.loads(line)
         y = text2y(r['odor_group'])
@@ -152,7 +152,7 @@ print(f'总计: {len(all_data)}')
 
 # ── 测试集 ──
 ev_data = []
-with open(BASE + '/data/processed/goodscents/gs_test_nosweet.jsonl') as f:
+with open(os.path.join(BASE, '..', 'data', 'gs_test_nosweet.jsonl')) as f:
     for line in f:
         r = json.loads(line)
         y = text2y(r['text'])
@@ -215,12 +215,12 @@ for ep in range(30):
     flag = ''
     if r1 > best_r1:
         best_r1 = r1
-        torch.save(m.state_dict(), BASE + '/checkpoints/model_nosweet_cls135_best.pt')
+        torch.save(m.state_dict(), os.path.join(BASE, '..', 'checkpoints', 'model_nosweet_cls135_best.pt'))
         flag = '★'
     if auc > best_auc:
         best_auc = auc
-        torch.save(m.state_dict(), BASE + '/checkpoints/model_nosweet_cls135_auc_best.pt')
+        torch.save(m.state_dict(), os.path.join(BASE, '..', 'checkpoints', 'model_nosweet_cls135_auc_best.pt'))
     print(f'ep{ep:2d}  | {al:.6f} | {auc:.4f}    | {r1:.1f}%  | {int(time.time()-t0)}s | {flag}')
 
-torch.save(m.state_dict(), BASE + '/checkpoints/model_nosweet_cls135_final.pt')
+torch.save(m.state_dict(), os.path.join(BASE, '..', 'checkpoints', 'model_nosweet_cls135_final.pt'))
 print(f'\n完成! best R@1={best_r1:.1f}%, best AUC={best_auc:.4f}')

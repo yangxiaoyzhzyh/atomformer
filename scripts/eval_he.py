@@ -13,7 +13,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 cmp_smiles = {}
-with open(BASE + '/HE_compounds.csv') as f:
+with open(os.path.join(BASE, '..', 'data', 'HE', 'HE_compounds.csv')) as f:
     reader = csv.DictReader(f)
     for r in reader:
         cmp_smiles[int(float(r['compound_id']))] = r['smiles']
@@ -82,7 +82,7 @@ def build(cmp_ids):
 
 # Load test data (official CheMixHub Fold 0 split — no shuffling)
 test_data = []
-df = pd.read_csv(BASE + '/HE_test.csv')
+df = pd.read_csv(os.path.join(BASE, '..', 'data', 'HE', 'HE_test.csv'))
 for _, r in df.iterrows():
     cmp_ids = eval(r['cmp_ids']); mol_fracs = eval(r['cmp_mole_fractions'])
     d = build(cmp_ids)
@@ -92,7 +92,7 @@ for _, r in df.iterrows():
     test_data.append(d)
 
 # Normalize using training statistics
-train_df = pd.read_csv(BASE + '/HE_train.csv')
+train_df = pd.read_csv(os.path.join(BASE, '..', 'data', 'HE', 'HE_train.csv'))
 train_ys = torch.tensor(train_df['value'].values, dtype=torch.float32)
 y_mean, y_std = train_ys.mean(), train_ys.std()
 for d in test_data: d.nraw = d.y.clone(); d.y = (d.y - y_mean) / y_std
@@ -100,13 +100,14 @@ for d in test_data: d.nraw = d.y.clone(); d.y = (d.y - y_mean) / y_std
 test_loader = DataLoader(test_data, batch_size=512, shuffle=False, num_workers=0)
 
 # Find all seed checkpoints
-seed_files = sorted([f for f in os.listdir(BASE) if f.startswith('model_he_seed') and f.endswith('.pt')])
+ckpt_dir = os.path.join(BASE, '..', 'checkpoints')
+seed_files = sorted([f for f in os.listdir(ckpt_dir) if f.startswith('model_he_seed') and f.endswith('.pt')])
 print(f'Found {len(seed_files)} seeds: {seed_files}')
 
 models = []
 for sf in seed_files:
     m = Model().to(DEVICE)
-    m.load_state_dict(torch.load(os.path.join(BASE, sf), map_location=DEVICE, weights_only=True))
+    m.load_state_dict(torch.load(os.path.join(ckpt_dir, sf), map_location=DEVICE, weights_only=True))
     m.eval()
     models.append(m)
 
