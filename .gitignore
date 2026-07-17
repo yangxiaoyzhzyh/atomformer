@@ -26,7 +26,7 @@ data/*.json
 
 # Paper files (not public until published)
 paper_draft_*.md
-preprint.docx
+*.docx
 
 # Jupyter
 .ipynb_checkpoints/
