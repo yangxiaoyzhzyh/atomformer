@@ -11,7 +11,7 @@ ZeroPad(9→64) → GINConv×3(hidden=64) → Linear(64→1024)
 atomformer_paper/
 ├── README.md
 ├── requirements.txt
-├── paper_draft_v2.7.md       # Full paper draft
+├── paper_draft_v3.1_main.md  # Full paper draft
 ├── scripts/                  # Training & evaluation
 │   ├── train_tgsc_bl.py      # Full model (GIN+TFM→BGE, TGSC+BL) 🏆
 │   ├── train_gin_only.py     # GIN-only regression ablation
@@ -30,23 +30,25 @@ atomformer_paper/
 ├── data/
 │   ├── tgsc_train_bge.jsonl  # TGSC monomer training (3,430 compounds)
 │   ├── tgsc_test_bge.jsonl   # TGSC monomer test (236 compounds)
-│   ├── blender_train.jsonl   # Blender pair training (552,816 pairs)
+│   ├── blender_train.jsonl   # Blender pair training (547,287 pairs)
+│   ├── blender_val.jsonl     # Blender pair validation (5,529 pairs)
 │   ├── blender_test.jsonl    # Blender pair test (6,260 pairs)
 │   ├── gs_train_nosweet.jsonl  # GoodScents training (classification)
 │   ├── gs_test_nosweet.jsonl   # GoodScents test (classification)
 │   ├── odor_group_1024dim_cache.json  # Odor group → BGE-M3 embedding
 │   └── HE/                   # Excess enthalpy data (Section 4)
 │       ├── HE_compounds.csv
-│       ├── HE_train.csv
-│       ├── HE_val.csv
-│       └── HE_test.csv
+│       ├── HE_train.csv      # 21,041 samples
+│       ├── HE_val.csv        # 3,007 samples
+│       └── HE_test.csv       # 6,013 samples
 ├── checkpoints/
-│   ├── model_tgsc_bl_ep38.pt       # Full regression model (BL AUROC=0.9347)
-│   ├── model_gin_only_ep59.pt      # GIN-only regression (BL AUROC=0.8185)
-│   ├── model_gin_cls_best.pt       # GIN-only classification (GS AUROC=0.8326)
+│   ├── model_tgsc_bl_best.pt        # Full regression model (BL AUROC=0.9347)
+│   ├── model_tgsc_bl_ep38.pt        # Full regression model (epoch 38)
+│   ├── model_gin_only_ep59.pt       # GIN-only regression (BL AUROC=0.8185)
+│   ├── model_gin_cls_best.pt        # GIN-only classification (GS AUROC=0.8326)
 │   ├── model_nosweet_cls135_auc_best.pt  # GIN+TFM+cls (BL AUROC=0.7847)
-│   ├── model_gin135_nosweet.pt     # GIN135 Sisson replication
-│   └── model_he_best.pt           # Excess enthalpy best single-seed
+│   ├── model_gin135_nosweet.pt      # GIN135 Sisson replication
+│   └── model_he_best.pt            # Excess enthalpy best single-seed
 └── data/clean_descriptions.py  # Data preprocessing utilities
     data/encode_descriptions.py
     data/split_data.py
@@ -125,7 +127,7 @@ git lfs pull
 
 ```
 @article{atomformer2026,
-  title={AtomFormer: Breaking Molecular Boundaries for Any-Molecule Odor Prediction},
+  title={AtomFormer: A Simple Model for Any Mixture Odor Prediction and Beyond},
   ...
 }
 ```
