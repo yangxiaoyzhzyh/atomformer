@@ -28,20 +28,25 @@ atomformer_paper/
 │   ├── eval_label_ambiguity.py # Label ambiguity midpoint verification
 │   └── eval_he.py              # Excess enthalpy ensemble evaluation
 ├── data/
-│   ├── tgsc_train_bge.jsonl    # TGSC monomer training (3,430 compounds)
-│   ├── tgsc_test_bge.jsonl     # TGSC monomer test (236 compounds)
-│   ├── blender_train.jsonl     # Blender pair training (547,287 pairs)
-│   ├── blender_val.jsonl       # Blender pair validation (5,529 pairs)
-│   ├── blender_test.jsonl      # Blender pair test (6,260 pairs)
-│   ├── odor_group_1024dim_cache.json  # Odor group → BGE-M3 embedding
-│   └── HE/                     # Excess enthalpy data
+│   ├── tgsc_train_bge.jsonl         # TGSC monomer training (3,430 compounds)
+│   ├── tgsc_test_bge.jsonl          # TGSC monomer test (236 compounds)
+│   ├── blender_train.jsonl          # Blender pair training (547,287 pairs)
+│   ├── blender_val.jsonl            # Blender pair validation (5,529 pairs)
+│   ├── blender_test.jsonl           # Blender pair test (6,260 pairs)
+│   ├── odor_group_1024dim_cache.json # Odor group → BGE-M3 embedding
+│   ├── clean_descriptions.py        # Odor description preprocessing
+│   ├── encode_descriptions.py       # BGE-M3 embedding generation
+│   ├── split_data.py                # Train/val/test split utilities
+│   └── HE/                          # Excess enthalpy data
 │       ├── HE_compounds.csv
-│       ├── HE_train.csv        # 21,041 samples
-│       ├── HE_val.csv          # 3,007 samples
-│       └── HE_test.csv         # 6,013 samples
-└── checkpoints/
-    ├── model_tgsc_bl_best.pt   # Odor prediction (BL AUROC=0.9347)
-    └── model_he_best.pt        # Excess enthalpy best single-seed
+│       ├── HE_train.csv             # 21,041 samples
+│       ├── HE_val.csv               # 3,007 samples
+│       └── HE_test.csv              # 6,013 samples
+├── checkpoints/
+│   ├── model_tgsc_bl_best.pt        # Odor prediction (BL AUROC=0.9347)
+│   └── model_he_best.pt             # Excess enthalpy best single-seed
+└── logs/
+    └── train_tgsc_bl.log            # Training log (reproducibility)
 ```
 
 ## Requirements
