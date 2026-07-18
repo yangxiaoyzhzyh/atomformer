@@ -2,8 +2,6 @@
 
 A simple GIN+Transformer backbone for general mixture property prediction. Concatenates all atoms from all constituent molecules into a single graph and processes them through a unified attention mechanism—no per-molecule encoding, no separate fusion module.
 
-**Results:** macro-AUROC = 0.9347 on 6,260 decontaminated odor mixtures; Pearson R = 0.937 on excess enthalpy of mixing with 1.18M parameters.
-
 ## Architecture
 
 ```
