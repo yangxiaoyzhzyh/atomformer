@@ -17,9 +17,7 @@ env/
 .DS_Store
 Thumbs.db
 
-# Data (sensitive/large)
-data/*.jsonl
-data/*.json
+# Data (managed by Git LFS, tracked explicitly)
 
 # Office temp files
 ~$*
