@@ -14,7 +14,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Load compound SMILES
 cmp_smiles = {}
-with open(os.path.join(BASE, '..', 'data', 'HE', 'HE_compounds.csv')) as f:
+with open(BASE + '/HE_compounds.csv') as f:
     reader = csv.DictReader(f)
     for r in reader:
         cmp_smiles[int(float(r['compound_id']))] = r['smiles']
@@ -87,7 +87,7 @@ def train_seed(seed):
 
     # Load data — use official CheMixHub Fold 0 split (no random shuffling)
     train_data = []
-    df = pd.read_csv(os.path.join(BASE, '..', 'data', 'HE', 'HE_train.csv'))
+    df = pd.read_csv(BASE + '/HE_train.csv')
     for _, r in df.iterrows():
         cmp_ids = eval(r['cmp_ids']); mol_fracs = eval(r['cmp_mole_fractions'])
         d = build(cmp_ids)
@@ -96,8 +96,18 @@ def train_seed(seed):
         d.extra = torch.tensor([mol_fracs[0]], dtype=torch.float32)
         train_data.append(d)
 
+    val_data = []
+    df = pd.read_csv(BASE + '/HE_val.csv')
+    for _, r in df.iterrows():
+        cmp_ids = eval(r['cmp_ids']); mol_fracs = eval(r['cmp_mole_fractions'])
+        d = build(cmp_ids)
+        if d is None: continue
+        d.y = torch.tensor(r['value'], dtype=torch.float32)
+        d.extra = torch.tensor([mol_fracs[0]], dtype=torch.float32)
+        val_data.append(d)
+
     test_data = []
-    df = pd.read_csv(os.path.join(BASE, '..', 'data', 'HE', 'HE_test.csv'))
+    df = pd.read_csv(BASE + '/HE_test.csv')
     for _, r in df.iterrows():
         cmp_ids = eval(r['cmp_ids']); mol_fracs = eval(r['cmp_mole_fractions'])
         d = build(cmp_ids)
@@ -110,9 +120,11 @@ def train_seed(seed):
     all_y = torch.stack([d.y for d in train_data])
     y_mean, y_std = all_y.mean(), all_y.std()
     for d in train_data: d.y = (d.y - y_mean) / y_std
+    for d in val_data: d.nraw = d.y.clone(); d.y = (d.y - y_mean) / y_std
     for d in test_data: d.nraw = d.y.clone(); d.y = (d.y - y_mean) / y_std
 
     train_loader = DataLoader(train_data, batch_size=256, shuffle=True, num_workers=2)
+    val_loader = DataLoader(val_data, batch_size=512, shuffle=False, num_workers=0)
     test_loader = DataLoader(test_data, batch_size=512, shuffle=False, num_workers=0)
 
     m = Model().to(DEVICE)
@@ -131,10 +143,11 @@ def train_seed(seed):
         if ep >= 3: sch.step()
         al = tl / len(train_loader)
 
+        # Evaluate on validation set
         m.eval()
         with torch.no_grad():
             preds, trues = [], []
-            for b in test_loader:
+            for b in val_loader:
                 b = b.to(DEVICE)
                 z = m(b.x, b.edge_index, b.batch, b.extra)
                 preds.append((z * y_std + y_mean).cpu())
@@ -143,26 +156,45 @@ def train_seed(seed):
             trues = torch.cat(trues).numpy()
         mae = np.mean(np.abs(preds - trues))
         r, _ = pearsonr(preds, trues) if len(preds) > 2 else (0, 0)
-        print(f'  Ep{ep:2d} | loss={al:.6f} | MAE={mae:.4f} | R={r:.4f}')
+        print(f'  Ep{ep:2d} | loss={al:.6f} | val_MAE={mae:.4f} | val_R={r:.4f}')
 
         if r > best_r:
             best_r, best_ep = r, ep
-            torch.save(m.state_dict(), os.path.join(BASE, '..', 'checkpoints', f"model_he_seed{seed}.pt"))
+            torch.save(m.state_dict(), f"{BASE}/model_he_seed{seed}.pt")
 
-    print(f'  >>> Seed {seed} best: Ep{best_ep} R={best_r:.4f}')
-    return best_r, best_ep
+    # Final evaluation on test set
+    print(f'  >>> Seed {seed} best: Ep{best_ep} val_R={best_r:.4f}')
+    m.load_state_dict(torch.load(f"{BASE}/model_he_seed{seed}.pt", weights_only=True))
+    m.eval()
+    with torch.no_grad():
+        preds, trues = [], []
+        for b in test_loader:
+            b = b.to(DEVICE)
+            z = m(b.x, b.edge_index, b.batch, b.extra)
+            preds.append((z * y_std + y_mean).cpu())
+            trues.append(b.nraw.cpu())
+        preds = torch.cat(preds).numpy()
+        trues = torch.cat(trues).numpy()
+    test_mae = np.mean(np.abs(preds - trues))
+    test_r, _ = pearsonr(preds, trues) if len(preds) > 2 else (0, 0)
+    print(f'  >>> Seed {seed} test: MAE={test_mae:.4f} R={test_r:.4f}')
+    return best_r, best_ep, test_mae, test_r
 
 if __name__ == '__main__':
     seeds = [int(s) for s in sys.argv[1].split(',')] if len(sys.argv) > 1 else list(range(10))
     print(f'Device: {DEVICE}, Seeds: {seeds}')
     results = []
     for seed in seeds:
-        r, ep = train_seed(seed)
-        results.append((seed, r, ep))
+        r_val, ep, mae_test, r_test = train_seed(seed)
+        results.append((seed, r_val, ep, mae_test, r_test))
 
     print('\n' + '='*40)
     print('All seeds done:')
-    for seed, r, ep in results:
-        print(f'  Seed {seed:2d}: best R={r:.4f} @ Ep{ep}')
-    rs = [r for _, r, _ in results]
-    print(f'  Mean R={np.mean(rs):.4f} ± {np.std(rs):.4f}')
+    for seed, r_val, ep, mae_test, r_test in results:
+        print(f'  Seed {seed:2d}: val_R={r_val:.4f} @ Ep{ep} | test_MAE={mae_test:.4f} test_R={r_test:.4f}')
+    r_vals = [r for _, r, _, _, _ in results]
+    r_tests = [r for _, _, _, _, r in results]
+    mae_tests = [m for _, _, _, m, _ in results]
+    print(f'  Mean val_R:  {np.mean(r_vals):.4f} ± {np.std(r_vals):.4f}')
+    print(f'  Mean test_R: {np.mean(r_tests):.4f} ± {np.std(r_tests):.4f}')
+    print(f'  Mean test_MAE: {np.mean(mae_tests):.4f} ± {np.std(mae_tests):.4f}')

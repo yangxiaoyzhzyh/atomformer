@@ -1,0 +1,81 @@
+Device: cuda
+Loading monomer training...
+  Monomer: 3430
+Loading blender training...
+  Blender train: 547120
+  Total train: 550550
+Loading blender validation...
+  Blender val: 5525
+Loading monomer test...
+  Monomer test: 236
+  Library: 3430 descriptions
+Loading blender test...
+  Blender test: 6260
+Building blender test graphs...
+  Blender test graphs: 6251
+Params: 16,892,035
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:529: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at /pytorch/aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+Ep 0 | lr=3.3e-04 | loss=0.000471 | Val_AUROC=0.7586(104grp) ★ | 200s
+Ep 1 | lr=6.7e-04 | loss=0.000398 | Val_AUROC=0.7973(104grp) ★ | 400s
+Ep 2 | lr=1.0e-03 | loss=0.000356 | Val_AUROC=0.8240(104grp) ★ | 600s
+Ep 3 | lr=1.0e-03 | loss=0.000319 | Val_AUROC=0.8402(104grp) ★ | 799s
+Ep 4 | lr=9.9e-04 | loss=0.000295 | Val_AUROC=0.8547(104grp) ★ | 995s
+Ep 5 | lr=9.8e-04 | loss=0.000279 | Val_AUROC=0.8612(104grp) ★ | 1195s
+Ep 6 | lr=9.6e-04 | loss=0.000268 | Val_AUROC=0.8709(104grp) ★ | 1393s
+Ep 7 | lr=9.3e-04 | loss=0.000259 | Val_AUROC=0.8703(104grp)   | 1588s
+Ep 8 | lr=9.0e-04 | loss=0.000254 | Val_AUROC=0.8735(104grp) ★ | 1787s
+Ep 9 | lr=8.7e-04 | loss=0.000248 | Val_AUROC=0.8877(104grp) ★ | 1983s
+Ep10 | lr=8.3e-04 | loss=0.000243 | Val_AUROC=0.8894(104grp) ★ | 2180s
+Ep11 | lr=7.9e-04 | loss=0.000239 | Val_AUROC=0.8839(104grp)   | 2378s
+Ep12 | lr=7.5e-04 | loss=0.000235 | Val_AUROC=0.8798(104grp)   | 2575s
+Ep13 | lr=7.0e-04 | loss=0.000232 | Val_AUROC=0.8860(104grp)   | 2772s
+Ep14 | lr=6.5e-04 | loss=0.000229 | Val_AUROC=0.8951(104grp) ★ | 2968s
+Ep15 | lr=6.0e-04 | loss=0.000226 | Val_AUROC=0.8925(104grp)   | 3164s
+Ep16 | lr=5.5e-04 | loss=0.000223 | Val_AUROC=0.8983(104grp) ★ | 3362s
+Ep17 | lr=5.0e-04 | loss=0.000221 | Val_AUROC=0.9030(104grp) ★ | 3558s
+Ep18 | lr=4.5e-04 | loss=0.000218 | Val_AUROC=0.9014(104grp)   | 3751s
+Ep19 | lr=4.0e-04 | loss=0.000216 | Val_AUROC=0.9038(104grp) ★ | 3950s
+Ep20 | lr=3.5e-04 | loss=0.000214 | Val_AUROC=0.9038(104grp) ★ | 4146s
+Ep21 | lr=3.0e-04 | loss=0.000212 | Val_AUROC=0.8986(104grp)   | 4344s
+Ep22 | lr=2.5e-04 | loss=0.000210 | Val_AUROC=0.9033(104grp)   | 4539s
+Ep23 | lr=2.1e-04 | loss=0.000208 | Val_AUROC=0.9092(104grp) ★ | 4738s
+Ep24 | lr=1.7e-04 | loss=0.000206 | Val_AUROC=0.9058(104grp)   | 4936s
+Ep25 | lr=1.3e-04 | loss=0.000205 | Val_AUROC=0.9062(104grp)   | 5134s
+Ep26 | lr=9.5e-05 | loss=0.000203 | Val_AUROC=0.9087(104grp)   | 5334s
+Ep27 | lr=6.7e-05 | loss=0.000202 | Val_AUROC=0.9133(104grp) ★ | 5533s
+Ep28 | lr=4.3e-05 | loss=0.000202 | Val_AUROC=0.9126(104grp)   | 5732s
+Ep29 | lr=2.4e-05 | loss=0.000200 | Val_AUROC=0.9116(104grp)   | 5925s
+Ep30 | lr=1.1e-05 | loss=0.000200 | Val_AUROC=0.9115(104grp)   | 6121s
+Ep31 | lr=2.7e-06 | loss=0.000200 | Val_AUROC=0.9105(104grp)   | 6319s
+Ep32 | lr=0.0e+00 | loss=0.000200 | Val_AUROC=0.9107(104grp)   | 6516s
+Ep33 | lr=2.7e-06 | loss=0.000199 | Val_AUROC=0.9109(104grp)   | 6714s
+Ep34 | lr=1.1e-05 | loss=0.000200 | Val_AUROC=0.9108(104grp)   | 6911s
+Ep35 | lr=2.4e-05 | loss=0.000200 | Val_AUROC=0.9119(104grp)   | 7110s
+Ep36 | lr=4.3e-05 | loss=0.000200 | Val_AUROC=0.9100(104grp)   | 7308s
+Ep37 | lr=6.7e-05 | loss=0.000200 | Val_AUROC=0.9081(104grp)   | 7503s
+Ep38 | lr=9.5e-05 | loss=0.000200 | Val_AUROC=0.9115(104grp)   | 7699s
+Ep39 | lr=1.3e-04 | loss=0.000200 | Val_AUROC=0.9090(104grp)   | 7901s
+Ep40 | lr=1.7e-04 | loss=0.000201 | Val_AUROC=0.9118(104grp)   | 8100s
+Ep41 | lr=2.1e-04 | loss=0.000201 | Val_AUROC=0.9102(104grp)   | 8300s
+Ep42 | lr=2.5e-04 | loss=0.000203 | Val_AUROC=0.9092(104grp)   | 8499s
+Ep43 | lr=3.0e-04 | loss=0.000203 | Val_AUROC=0.9074(104grp)   | 8697s
+Ep44 | lr=3.5e-04 | loss=0.000205 | Val_AUROC=0.9081(104grp)   | 8897s
+Ep45 | lr=4.0e-04 | loss=0.000205 | Val_AUROC=0.9053(104grp)   | 9094s
+Ep46 | lr=4.5e-04 | loss=0.000207 | Val_AUROC=0.9102(104grp)   | 9291s
+Ep47 | lr=5.0e-04 | loss=0.000207 | Val_AUROC=0.9018(104grp)   | 9491s
+Ep48 | lr=5.5e-04 | loss=0.000208 | Val_AUROC=0.9031(104grp)   | 9685s
+Ep49 | lr=6.0e-04 | loss=0.000209 | Val_AUROC=0.9032(104grp)   | 9884s
+Ep50 | lr=6.5e-04 | loss=0.000210 | Val_AUROC=0.9070(104grp)   | 10083s
+Ep51 | lr=7.0e-04 | loss=0.000211 | Val_AUROC=0.9094(104grp)   | 10280s
+Ep52 | lr=7.5e-04 | loss=0.000212 | Val_AUROC=0.9070(104grp)   | 10478s
+Ep53 | lr=7.9e-04 | loss=0.000213 | Val_AUROC=0.9064(104grp)   | 10675s
+Ep54 | lr=8.3e-04 | loss=0.000212 | Val_AUROC=0.9066(104grp)   | 10873s
+Ep55 | lr=8.7e-04 | loss=0.000213 | Val_AUROC=0.9019(104grp)   | 11073s
+Ep56 | lr=9.0e-04 | loss=0.000213 | Val_AUROC=0.9015(104grp)   | 11271s
+Ep57 | lr=9.3e-04 | loss=0.000213 | Val_AUROC=0.8968(104grp)   | 11468s
+Ep58 | lr=9.6e-04 | loss=0.000213 | Val_AUROC=0.9039(104grp)   | 11667s
+Ep59 | lr=9.8e-04 | loss=0.000213 | Val_AUROC=0.9023(104grp)   | 11869s
+
+Best val AUROC: 0.9133 @ Ep27
+Final test AUROC: 0.9301 (104 groups)

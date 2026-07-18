@@ -103,8 +103,18 @@ for line in open(os.path.join(BASE, '..', 'data', 'blender_train.jsonl')):
     if g not in gi: continue
     d = build([r['smiles_a'], r['smiles_b']])
     if d: d.y = gv[gi[g]].cpu(); data.append(d); bl_n += 1
-print(f'  Blender: {bl_n}')
-print(f'  Total: {len(data)}')
+print(f'  Blender train: {bl_n}')
+print(f'  Total train: {len(data)}')
+
+# ─── 验证集（从训练集分出 1%） ───
+print('Loading blender validation...')
+bl_val_samples, bl_val_gts = [], []
+for line in open(os.path.join(BASE, '..', 'data', 'blender_val.jsonl')):
+    r = json.loads(line); g = r['odor_group'].split(',')[0].strip()
+    if g not in gi: continue
+    d = build([r['smiles_a'], r['smiles_b']])
+    if d: bl_val_samples.append(d); bl_val_gts.append(gi[g])
+print(f'  Blender val: {len(bl_val_samples)}')
 
 # ─── 评估 ───
 print('Loading monomer test...')
@@ -139,16 +149,17 @@ for r in bl_test:
     if d: bl_samples.append(d); bl_gts.append(gi[g])
 print(f'  Blender test graphs: {len(bl_samples)}')
 
-def eval_bl_auroc(model):
+def eval_bl_auroc(model, samples, gts):
+    """Evaluate blender AUROC on arbitrary samples (val or test)."""
     model.eval()
-    batch = Batch.from_data_list(bl_samples).to(DEVICE)
+    batch = Batch.from_data_list(samples).to(DEVICE)
     with torch.no_grad():
         z = model(batch.x, batch.edge_index, batch.batch)
     cos = torch.mm(z.cpu(), gv.cpu().t()).numpy()
-    y_true = np.zeros((len(bl_gts), len(gn)))
-    for i, g in enumerate(bl_gts): y_true[i, g] = 1
+    y_true = np.zeros((len(gts), len(gn)))
+    for i, g in enumerate(gts): y_true[i, g] = 1
     aucs = [roc_auc_score(y_true[:, i], cos[:, i]) for i in range(len(gn))
-            if 0 < y_true[:, i].sum() < len(bl_gts)]
+            if 0 < y_true[:, i].sum() < len(gts)]
     return np.mean(aucs), len(aucs)
 
 # ─── 训练 ───
@@ -164,7 +175,7 @@ WARMUP_EPOCHS = 3
 TOTAL_EPOCHS = 60
 warmup_lrs = [1e-3 * (ep + 1) / WARMUP_EPOCHS for ep in range(WARMUP_EPOCHS)]
 
-t0 = time.time(); best_auc = -1
+t0 = time.time(); best_val_auc = -1; best_ep = 0
 for ep in range(TOTAL_EPOCHS):
     if ep < WARMUP_EPOCHS:
         for pg in opt.param_groups: pg['lr'] = warmup_lrs[ep]
@@ -176,19 +187,25 @@ for ep in range(TOTAL_EPOCHS):
     if ep >= WARMUP_EPOCHS: sch.step()
     al = tl / len(loader)
 
-    # Evaluate
-    bl_auc, n_groups = eval_bl_auroc(m)
+    # Evaluate on validation set (not test)
+    val_auc, n_groups = eval_bl_auroc(m, bl_val_samples, bl_val_gts)
 
-    # Save every epoch
-    ckpt = os.path.join(BASE, '..', 'checkpoints', f'model_tgsc_bl_ep{ep}.pt')
-    torch.save(m.state_dict(), ckpt)
-
-    improved = bl_auc > best_auc
-    if improved: best_auc = bl_auc
+    improved = val_auc > best_val_auc
+    if improved:
+        best_val_auc = val_auc
+        best_ep = ep
+        torch.save(m.state_dict(), os.path.join(BASE, '..', 'checkpoints', 'model_tgsc_bl_best.pt'))
 
     tag = '★' if improved else ' '
     elapsed = time.time() - t0
     clr = opt.param_groups[0]['lr']
     print(f'Ep{ep:2d} | lr={clr:.1e} | loss={al:.6f} | '
-          f'BL_AUROC={bl_auc:.4f}({n_groups}grp) {tag} | {elapsed:.0f}s')
-print(f'\nDone! Best BL AUROC: {best_auc:.4f}')
+          f'Val_AUROC={val_auc:.4f}({n_groups}grp) {tag} | {elapsed:.0f}s')
+
+# ─── 最终测试集评估 ───
+print(f'\nBest val AUROC: {best_val_auc:.4f} @ Ep{best_ep}')
+m.load_state_dict(torch.load(
+    os.path.join(BASE, '..', 'checkpoints', 'model_tgsc_bl_best.pt'),
+    weights_only=True, map_location=DEVICE))
+test_auc, n_grp = eval_bl_auroc(m, bl_samples, bl_gts)
+print(f'Final test AUROC: {test_auc:.4f} ({n_grp} groups)')
