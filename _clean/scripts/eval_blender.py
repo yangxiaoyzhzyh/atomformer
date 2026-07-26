@@ -94,7 +94,7 @@ print(f'Clean test (from blender_test.jsonl): {len(samples)}')
 
 batch=Batch.from_data_list(samples).to(DEVICE)
 m=Model().to(DEVICE)
-m.load_state_dict(torch.load(os.path.join(BASE, 'checkpoints', 'model_tgsc_bl_ep38.pt'),map_location=DEVICE),strict=False)
+m.load_state_dict(torch.load(os.path.join(BASE, 'checkpoints', 'model_tgsc_bl_best.pt'),map_location=DEVICE),strict=False)
 m.eval()
 
 with torch.no_grad():

@@ -24,7 +24,7 @@ atomformer_paper/
 │   ├── eval_bl_per_group.py    # Per-group AUROC breakdown
 │   ├── eval_monomer.py         # Monomer conR@K + cosR@K
 │   ├── eval_label_ambiguity.py # Label ambiguity midpoint verification
-│   └── eval_he.py              # Excess enthalpy ensemble evaluation
+│   └── eval_he.py              # Excess enthalpy single-seed evaluation
 ├── data/
 │   ├── tgsc_train_bge.jsonl         # TGSC monomer training (3,430 compounds)
 │   ├── tgsc_test_bge.jsonl          # TGSC monomer test (236 compounds)
@@ -41,7 +41,7 @@ atomformer_paper/
 │       ├── HE_val.csv               # 3,007 samples
 │       └── HE_test.csv              # 6,013 samples
 ├── checkpoints/
-│   ├── model_tgsc_bl_best.pt        # Odor prediction (BL AUROC=0.9347)
+│   ├── model_tgsc_bl_best.pt        # Odor prediction (BL AUROC≈0.9301)
 │   └── model_he_best.pt             # Excess enthalpy best single-seed
 └── logs/
     └── train_tgsc_bl.log            # Training log (reproducibility)
@@ -57,7 +57,7 @@ atomformer_paper/
 - scikit-learn
 
 ```bash
-pip install torch torch_geometric rdkit numpy scikit-learn
+pip install torch torch_geometric rdkit numpy scikit-learn pandas scipy requests
 ```
 
 ## Training
@@ -66,8 +66,9 @@ pip install torch torch_geometric rdkit numpy scikit-learn
 # Odor prediction (TGSC + Blender)
 python scripts/train_tgsc_bl.py
 
-# Excess enthalpy
-python scripts/train_he.py 0,1,2,...,49
+# Excess enthalpy (default: 10 seeds; pass comma-separated seeds to override)
+python scripts/train_he.py           # uses seeds 0–9
+python scripts/train_he.py 0,1,2,...,49  # explicit seed list
 ```
 
 ## Evaluation
@@ -85,7 +86,7 @@ python scripts/eval_monomer.py
 # Label ambiguity verification
 python scripts/eval_label_ambiguity.py
 
-# Excess enthalpy ensemble evaluation
+# Excess enthalpy evaluation
 python scripts/eval_he.py
 ```
 

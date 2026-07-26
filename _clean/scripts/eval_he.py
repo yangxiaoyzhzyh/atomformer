@@ -1,4 +1,4 @@
-"""超额焓 Hᴱ Ensemble 评估"""
+"""超额焓 Hᴱ 单种子评估"""
 import os, torch, csv
 import torch.nn as nn, torch.nn.functional as F
 from torch_geometric.loader import DataLoader
@@ -99,35 +99,24 @@ for d in test_data: d.nraw = d.y.clone(); d.y = (d.y - y_mean) / y_std
 
 test_loader = DataLoader(test_data, batch_size=512, shuffle=False, num_workers=0)
 
-# Find all seed checkpoints
-ckpt_dir = os.path.join(BASE, '..', 'checkpoints')
-seed_files = sorted([f for f in os.listdir(ckpt_dir) if f.startswith('model_he_seed') and f.endswith('.pt')])
-print(f'Found {len(seed_files)} seeds: {seed_files}')
+# Single-seed evaluation
+ckpt_path = os.path.join(BASE, '..', 'checkpoints', 'model_he_best.pt')
+m = Model().to(DEVICE)
+m.load_state_dict(torch.load(ckpt_path, map_location=DEVICE, weights_only=True))
+m.eval()
+print(f'Loaded: {ckpt_path}')
 
-models = []
-for sf in seed_files:
-    m = Model().to(DEVICE)
-    m.load_state_dict(torch.load(os.path.join(ckpt_dir, sf), map_location=DEVICE, weights_only=True))
-    m.eval()
-    models.append(m)
-
-# Ensemble prediction
-all_preds = []
 with torch.no_grad():
+    all_preds, all_nraw = [], []
     for b in test_loader:
         b = b.to(DEVICE)
-        preds_seeds = []
-        for m in models:
-            z = m(b.x, b.edge_index, b.batch, b.extra)
-            preds_seeds.append((z * y_std + y_mean).cpu().numpy())
-        all_preds.append(np.mean(preds_seeds, axis=0))
+        z = m(b.x, b.edge_index, b.batch, b.extra)
+        all_preds.append((z * y_std + y_mean).cpu().numpy())
+        all_nraw.append(b.nraw.cpu().numpy())
 
 preds = np.concatenate(all_preds)
-trues = torch.stack([d.nraw for d in test_data]).numpy()
+trues = np.concatenate(all_nraw)
 
 mae = np.mean(np.abs(preds - trues))
 r, _ = pearsonr(preds, trues)
-print(f'\nEnsemble ({len(models)} seeds): MAE={mae:.4f} kJ/mol, R={r:.4f}')
-
-# Also compute individual seed metrics for comparison
-print(f'\nSingle seed bests (from training):')
+print(f'Test: MAE={mae:.4f} kJ/mol, R={r:.4f}')

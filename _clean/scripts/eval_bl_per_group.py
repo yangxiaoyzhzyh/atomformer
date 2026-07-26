@@ -101,13 +101,14 @@ def build(smis):
 samples, gts = [], []
 for r in test_data:
     g = r['odor_group'].split(',')[0].strip()
+    if g not in gi: continue
     d = build([r['smiles_a'], r['smiles_b']])
     if d:
         samples.append(d)
         gts.append(gi[g])
 
 m = Model().to(DEVICE)
-ckpt = os.path.join(BASE, 'checkpoints', 'model_tgsc_bl_ep38.pt')
+ckpt = os.path.join(BASE, 'checkpoints', 'model_tgsc_bl_best.pt')
 m.load_state_dict(torch.load(ckpt, map_location=DEVICE, weights_only=True), strict=False)
 m.eval()
 
