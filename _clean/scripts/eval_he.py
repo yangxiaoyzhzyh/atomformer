@@ -10,7 +10,7 @@ import pandas as pd
 from scipy.stats import pearsonr
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-DATA = os.path.join(BASE, '..', 'data', 'HE')
+DATA = os.path.join(BASE, '..', 'data', 'HE', 'chemixhub_fold_0')
 CKPT = os.path.join(BASE, '..', 'checkpoints')
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
