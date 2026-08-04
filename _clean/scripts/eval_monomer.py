@@ -67,7 +67,7 @@ print(f'Graphs: {len(samples)}')
 
 # Load model
 m=Model().to(DEVICE)
-m.load_state_dict(torch.load(os.path.join(BASE, 'checkpoints', 'model_tgsc_bl_ep38.pt'),map_location=DEVICE,weights_only=True),strict=False)
+m.load_state_dict(torch.load(os.path.join(BASE, 'checkpoints', 'model_tgsc_bl_best.pt'),map_location=DEVICE,weights_only=True),strict=False)
 m.eval()
 
 h1=h3=0; ch1=ch3=0
