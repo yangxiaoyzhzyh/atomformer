@@ -9,7 +9,7 @@ ZeroPad(9→64) → GINConv×3(hidden=64) → Linear(64→1024)
 → TransformerEncoder×2(heads=8) → Masked Mean Pool → L2 → MSE → BGE-M3-1024
 ```
 
-For excess enthalpy, replace the prediction head with scalar regression (Linear → scalar, d=256).
+For excess enthalpy, each molecule's mole fraction is appended to every atom of that molecule as a 10th atomic feature (ZeroPad(10→64)). The projection reduces to 256-dim, the Transformer uses 4 heads, and the pooled vector feeds a scalar regression head (Linear → scalar).
 
 ## Repository Structure
 
