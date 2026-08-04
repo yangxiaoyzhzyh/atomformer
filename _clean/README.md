@@ -41,7 +41,7 @@ atomformer_paper/
 │       ├── HE_val.csv               # 3,007 samples
 │       └── HE_test.csv              # 6,013 samples
 ├── checkpoints/
-│   ├── model_tgsc_bl_best.pt        # Odor prediction (BL AUROC≈0.9301)
+│   ├── model_tgsc_bl_best.pt        # Odor prediction
 │   └── model_he_best.pt             # Excess enthalpy best single-seed
 └── logs/
     └── train_tgsc_bl.log            # Training log (reproducibility)
