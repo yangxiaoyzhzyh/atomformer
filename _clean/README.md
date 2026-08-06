@@ -31,7 +31,6 @@ atomformer_paper/
 │   ├── blender_val.jsonl            # Blender pair validation (692 pairs)
 │   ├── blender_test.jsonl           # Blender pair test (6,260 pairs)
 │   ├── odor_group_1024dim_cache.json # Odor group → BGE-M3 embedding
-│   ├── clean_descriptions.py        # Odor description preprocessing & BGE-M3 encoding
 │   └── HE/                          # Excess enthalpy data
 │       ├── chemixhub_fold_0/        # Official CheMixHub Fold 0 split (Section 3)
 │       ├── extrapolation/           # Re-partitioned by component count (Section 4)

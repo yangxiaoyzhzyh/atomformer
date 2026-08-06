@@ -9,3 +9,6 @@
 _clean/__pycache__/
 _clean/**/__pycache__/
 _clean/*.pyc
+
+# Local training runs (checkpoints/logs/results) - not committed
+_clean/runs/
