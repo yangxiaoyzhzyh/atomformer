@@ -1,0 +1,4 @@
+tag,seed,knee_window,knee_ratio,knee_streak,min_epochs,epochs,bsz,lr,dropout,params,best_val,best_ep,knee_ep,stop_ep,test,n_classes,seconds
+knee_final_s42,42,5,0.1,2,10,60,64,0.0003,0.1,1115597,0.9972,13,14,14,0.7652,74,226
+knee_final_s43,43,5,0.1,2,10,60,64,0.0003,0.1,1115597,0.998,12,14,14,0.754,74,220
+knee_final_s44,44,5,0.1,2,10,60,64,0.0003,0.1,1115597,0.997,11,12,12,0.7616,74,191

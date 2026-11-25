@@ -1,0 +1,72 @@
+Device: cuda | pairing: D:\WorkBuddyProject\2026-09-09-10-23-42\sisson_final\data | out: D:\WorkBuddyProject\2026-09-09-10-23-42\sisson_final\scripts\..\results
+pairing.data: stub (未提供 --odor-pair-dir)
+Sisson classes: 74
+Loading trainpairs74.pt ...
+  train pairs: 42158
+  test pairs : 40461
+split(pair): train 41158 | val 1000 | test 40461
+Building graphs ...
+graphs: train 41158 | val 1000 | test 40461
+Params: 1,115,597
+D:\WorkBuddyProject\2026-09-09-10-23-42\cat1norm_env\Lib\site-packages\torch\nn\modules\transformer.py:508: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\aten\src\ATen\NestedTensorImpl.cpp:182.)
+  output = torch._nested_tensor_from_mask(
+[knee_final_s42] ep   0 | lr 1.0e-04 | loss 0.0993 | val 0.7532 (best 0.7532@0) | d1 0.0000/0.0000 | 16s
+[knee_final_s42] ep   1 | lr 2.0e-04 | loss 0.0470 | val 0.9117 (best 0.9117@1) | d1 0.2231/0.2231 | 31s
+[knee_final_s42] ep   2 | lr 3.0e-04 | loss 0.0341 | val 0.9742 (best 0.9742@2) | d1 0.2528/0.2528 | 46s
+[knee_final_s42] ep   3 | lr 3.0e-04 | loss 0.0257 | val 0.9854 (best 0.9854@3) | d1 0.1880/0.2528 | 61s
+[knee_final_s42] ep   4 | lr 3.0e-04 | loss 0.0214 | val 0.9916 (best 0.9916@4) | d1 0.1611/0.2528 | 74s
+[knee_final_s42] ep   5 | lr 3.0e-04 | loss 0.0187 | val 0.9943 (best 0.9943@5) | d1 0.3270/0.3270 | 88s
+[knee_final_s42] ep   6 | lr 3.0e-04 | loss 0.0169 | val 0.9926 (best 0.9943@5) | d1 0.2151/0.3270 | 102s
+[knee_final_s42] ep   7 | lr 2.9e-04 | loss 0.0157 | val 0.9957 (best 0.9957@7) | d1 0.1551/0.3270 | 118s
+[knee_final_s42] ep   8 | lr 2.9e-04 | loss 0.0146 | val 0.9963 (best 0.9963@8) | d1 0.1183/0.3270 | 133s
+[knee_final_s42] ep   9 | lr 2.9e-04 | loss 0.0137 | val 0.9969 (best 0.9969@9) | d1 0.0851/0.3270 | 148s
+[knee_final_s42] ep  10 | lr 2.9e-04 | loss 0.0132 | val 0.9964 (best 0.9969@9) | d1 0.0396/0.3270 | 164s
+[knee_final_s42] ep  11 | lr 2.8e-04 | loss 0.0124 | val 0.9966 (best 0.9969@9) | d1 0.0669/0.3270 | 179s
+[knee_final_s42] ep  12 | lr 2.8e-04 | loss 0.0120 | val 0.9971 (best 0.9971@12) | d1 0.0354/0.3270 | 193s
+[knee_final_s42] ep  13 | lr 2.7e-04 | loss 0.0113 | val 0.9972 (best 0.9972@13) | d1 0.0253/0.3270 | 208s
+>> [knee_final_s42] 拐点触发：停于 ep14，回载 [0,14] 内 best-val ckpt ep13 (val 0.9972, lr 2.68e-04)
+[knee_final_s42] ep  14 | lr 2.7e-04 | loss 0.0109 | val 0.9972 (best 0.9972@13) | d1 0.0086/0.3270 | 222s
+>> [knee_final_s42] knee ep14 | best-val ep13 (val 0.9972) | TEST 0.7652 (74/74 classes) | 226s
+
+[knee_final_s43] ep   0 | lr 1.0e-04 | loss 0.0980 | val 0.7496 (best 0.7496@0) | d1 0.0000/0.0000 | 14s
+[knee_final_s43] ep   1 | lr 2.0e-04 | loss 0.0467 | val 0.9070 (best 0.9070@1) | d1 0.2150/0.2150 | 29s
+[knee_final_s43] ep   2 | lr 3.0e-04 | loss 0.0336 | val 0.9752 (best 0.9752@2) | d1 0.2631/0.2631 | 43s
+[knee_final_s43] ep   3 | lr 3.0e-04 | loss 0.0254 | val 0.9885 (best 0.9885@3) | d1 0.2152/0.2631 | 58s
+[knee_final_s43] ep   4 | lr 3.0e-04 | loss 0.0207 | val 0.9934 (best 0.9934@4) | d1 0.1775/0.2631 | 72s
+[knee_final_s43] ep   5 | lr 3.0e-04 | loss 0.0182 | val 0.9948 (best 0.9948@5) | d1 0.3360/0.3360 | 86s
+[knee_final_s43] ep   6 | lr 3.0e-04 | loss 0.0166 | val 0.9965 (best 0.9965@6) | d1 0.2845/0.3360 | 101s
+[knee_final_s43] ep   7 | lr 2.9e-04 | loss 0.0153 | val 0.9961 (best 0.9965@6) | d1 0.1605/0.3360 | 115s
+[knee_final_s43] ep   8 | lr 2.9e-04 | loss 0.0142 | val 0.9972 (best 0.9972@8) | d1 0.1214/0.3360 | 129s
+[knee_final_s43] ep   9 | lr 2.9e-04 | loss 0.0133 | val 0.9969 (best 0.9972@8) | d1 0.0665/0.3360 | 144s
+[knee_final_s43] ep  10 | lr 2.9e-04 | loss 0.0128 | val 0.9969 (best 0.9972@8) | d1 0.0461/0.3360 | 158s
+[knee_final_s43] ep  11 | lr 2.8e-04 | loss 0.0123 | val 0.9975 (best 0.9975@11) | d1 0.0306/0.3360 | 173s
+[knee_final_s43] ep  12 | lr 2.8e-04 | loss 0.0115 | val 0.9980 (best 0.9980@12) | d1 0.0567/0.3360 | 188s
+[knee_final_s43] ep  13 | lr 2.7e-04 | loss 0.0110 | val 0.9976 (best 0.9980@12) | d1 0.0161/0.3360 | 203s
+>> [knee_final_s43] 拐点触发：停于 ep14，回载 [0,14] 内 best-val ckpt ep12 (val 0.9980, lr 2.68e-04)
+[knee_final_s43] ep  14 | lr 2.7e-04 | loss 0.0107 | val 0.9977 (best 0.9980@12) | d1 0.0254/0.3360 | 216s
+>> [knee_final_s43] knee ep14 | best-val ep12 (val 0.9980) | TEST 0.7540 (74/74 classes) | 220s
+
+[knee_final_s44] ep   0 | lr 1.0e-04 | loss 0.0978 | val 0.7687 (best 0.7687@0) | d1 0.0000/0.0000 | 14s
+[knee_final_s44] ep   1 | lr 2.0e-04 | loss 0.0468 | val 0.9092 (best 0.9092@1) | d1 0.2032/0.2032 | 29s
+[knee_final_s44] ep   2 | lr 3.0e-04 | loss 0.0340 | val 0.9656 (best 0.9656@2) | d1 0.2083/0.2083 | 44s
+[knee_final_s44] ep   3 | lr 3.0e-04 | loss 0.0257 | val 0.9857 (best 0.9857@3) | d1 0.1990/0.2083 | 58s
+[knee_final_s44] ep   4 | lr 3.0e-04 | loss 0.0211 | val 0.9932 (best 0.9932@4) | d1 0.1838/0.2083 | 73s
+[knee_final_s44] ep   5 | lr 3.0e-04 | loss 0.0185 | val 0.9950 (best 0.9950@5) | d1 0.3325/0.3325 | 87s
+[knee_final_s44] ep   6 | lr 3.0e-04 | loss 0.0168 | val 0.9960 (best 0.9960@6) | d1 0.2721/0.3325 | 101s
+[knee_final_s44] ep   7 | lr 2.9e-04 | loss 0.0154 | val 0.9960 (best 0.9960@6) | d1 0.1870/0.3325 | 115s
+[knee_final_s44] ep   8 | lr 2.9e-04 | loss 0.0143 | val 0.9967 (best 0.9967@8) | d1 0.1267/0.3325 | 130s
+[knee_final_s44] ep   9 | lr 2.9e-04 | loss 0.0136 | val 0.9968 (best 0.9968@9) | d1 0.0659/0.3325 | 144s
+[knee_final_s44] ep  10 | lr 2.9e-04 | loss 0.0130 | val 0.9969 (best 0.9969@10) | d1 0.0412/0.3325 | 158s
+[knee_final_s44] ep  11 | lr 2.8e-04 | loss 0.0123 | val 0.9970 (best 0.9970@11) | d1 0.0249/0.3325 | 173s
+>> [knee_final_s44] 拐点触发：停于 ep12，回载 [0,12] 内 best-val ckpt ep11 (val 0.9970, lr 2.78e-04)
+[knee_final_s44] ep  12 | lr 2.8e-04 | loss 0.0118 | val 0.9970 (best 0.9970@11) | d1 0.0247/0.3325 | 187s
+>> [knee_final_s44] knee ep12 | best-val ep11 (val 0.9970) | TEST 0.7616 (74/74 classes) | 191s
+
+==============================================================================
+>> 策略：knee 拐点早停 | seeds=[42, 43, 44] | 预算上限 60 ep
+   seed 42: knee ep14 → best-val ep13 (val 0.9972) | TEST 0.7652
+   seed 43: knee ep14 → best-val ep12 (val 0.9980) | TEST 0.7540
+   seed 44: knee ep12 → best-val ep11 (val 0.9970) | TEST 0.7616
+>> TEST = 0.7603 ± 0.0057 (n=3, 样本标准差 ddof=1)
+>> 锚点：Sisson MPNN-GNN 0.7627±0.0047 | GIN-GNN 0.7359±0.0222
+>> 结果：D:\WorkBuddyProject\2026-09-09-10-23-42\sisson_final\scripts\..\results\results_final.csv

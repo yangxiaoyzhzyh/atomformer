@@ -1,0 +1,26 @@
+Device: cpu
+Loaded full (16,892,035)
+Loaded gin_only (92,291)
+Loaded tfm_only (16,892,035)
+
+===== A. 单体 conR@3 按重原子数分层 =====
+单体: 236
+C:\Users\yangx\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\torch\nn\modules\transformer.py:529: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\NestedTensorImpl.cpp:182.)
+  output = torch._nested_tensor_from_mask(
+  full      : <= 15: 107/192=55.7% | 16-30: 19/41=46.3% | > 30: 3/3=100.0%
+  gin_only  : <= 15: 94/192=49.0% | 16-30: 19/41=46.3% | > 30: 2/3=66.7%
+  tfm_only  : <= 15: 106/192=55.2% | 16-30: 18/41=43.9% | > 30: 3/3=100.0%
+
+===== B. blender AUROC 按总重原子数分层 =====
+blender: 6260
+  full      : 0: 0.9657(108组/6201样本) | 1: 0.9888(14组/56样本) | 2: 1.0000(3组/3样本)
+  gin_only  : 0: 0.8436(108组/6201样本) | 1: 0.9050(14组/56样本) | 2: 1.0000(3组/3样本)
+  tfm_only  : 0: 0.8221(108组/6201样本) | 1: 0.9314(14组/56样本) | 2: 1.0000(3组/3样本)
+===== C. 易混淆且气味不同的子集（属性包相似、骨架不同、组不同）=====
+库: 3430 (属性包+骨架)
+test 分子: 12520
+有效 blender 对: 6260
+易混淆且气味不同子集: 2086 对 (混淆度 0.630, 气味冲突 0.495)
+  full      : AUROC 0.9652 (94组/2086样本)
+  gin_only  : AUROC 0.8680 (94组/2086样本)
+  tfm_only  : AUROC 0.8180 (94组/2086样本)

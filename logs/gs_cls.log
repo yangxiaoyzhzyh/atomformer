@@ -1,0 +1,67 @@
+MIST classes: 135
+有效样本(含≥1 MIST 标签): 4361
+train 3450 | val 303 | test 608
+Params: 1,131,274
+C:\Users\yangx\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\torch\nn\modules\transformer.py:529: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\NestedTensorImpl.cpp:182.)
+  output = torch._nested_tensor_from_mask(
+  ep  0 | loss 0.3744 | val AUROC 0.5469 | best 0.5469@0
+  ep  1 | loss 0.1556 | val AUROC 0.6041 | best 0.6041@1
+  ep  2 | loss 0.1154 | val AUROC 0.6465 | best 0.6465@2
+  ep  3 | loss 0.1077 | val AUROC 0.6777 | best 0.6777@3
+  ep  4 | loss 0.1024 | val AUROC 0.7083 | best 0.7083@4
+  ep  5 | loss 0.0986 | val AUROC 0.7319 | best 0.7319@5
+  ep  6 | loss 0.0956 | val AUROC 0.7548 | best 0.7548@6
+  ep  7 | loss 0.0933 | val AUROC 0.7743 | best 0.7743@7
+  ep  8 | loss 0.0913 | val AUROC 0.7903 | best 0.7903@8
+  ep  9 | loss 0.0896 | val AUROC 0.8011 | best 0.8011@9
+  ep 10 | loss 0.0880 | val AUROC 0.8060 | best 0.8060@10
+  ep 11 | loss 0.0864 | val AUROC 0.8123 | best 0.8123@11
+  ep 12 | loss 0.0852 | val AUROC 0.8128 | best 0.8128@12
+  ep 13 | loss 0.0840 | val AUROC 0.8230 | best 0.8230@13
+  ep 14 | loss 0.0833 | val AUROC 0.8221 | best 0.8230@13
+  ep 15 | loss 0.0821 | val AUROC 0.8298 | best 0.8298@15
+  ep 16 | loss 0.0808 | val AUROC 0.8281 | best 0.8298@15
+  ep 17 | loss 0.0801 | val AUROC 0.8344 | best 0.8344@17
+  ep 18 | loss 0.0792 | val AUROC 0.8326 | best 0.8344@17
+  ep 19 | loss 0.0784 | val AUROC 0.8335 | best 0.8344@17
+  ep 20 | loss 0.0773 | val AUROC 0.8369 | best 0.8369@20
+  ep 21 | loss 0.0765 | val AUROC 0.8319 | best 0.8369@20
+  ep 22 | loss 0.0759 | val AUROC 0.8403 | best 0.8403@22
+  ep 23 | loss 0.0747 | val AUROC 0.8388 | best 0.8403@22
+  ep 24 | loss 0.0745 | val AUROC 0.8415 | best 0.8415@24
+  ep 25 | loss 0.0734 | val AUROC 0.8378 | best 0.8415@24
+  ep 26 | loss 0.0727 | val AUROC 0.8403 | best 0.8415@24
+  ep 27 | loss 0.0722 | val AUROC 0.8370 | best 0.8415@24
+  ep 28 | loss 0.0713 | val AUROC 0.8347 | best 0.8415@24
+  ep 29 | loss 0.0707 | val AUROC 0.8379 | best 0.8415@24
+  ep 30 | loss 0.0701 | val AUROC 0.8400 | best 0.8415@24
+  ep 31 | loss 0.0698 | val AUROC 0.8375 | best 0.8415@24
+  ep 32 | loss 0.0692 | val AUROC 0.8408 | best 0.8415@24
+  ep 33 | loss 0.0682 | val AUROC 0.8382 | best 0.8415@24
+  ep 34 | loss 0.0678 | val AUROC 0.8396 | best 0.8415@24
+  ep 35 | loss 0.0675 | val AUROC 0.8366 | best 0.8415@24
+  ep 36 | loss 0.0666 | val AUROC 0.8353 | best 0.8415@24
+  ep 37 | loss 0.0663 | val AUROC 0.8353 | best 0.8415@24
+  ep 38 | loss 0.0659 | val AUROC 0.8351 | best 0.8415@24
+  ep 39 | loss 0.0654 | val AUROC 0.8374 | best 0.8415@24
+  ep 40 | loss 0.0648 | val AUROC 0.8352 | best 0.8415@24
+  ep 41 | loss 0.0647 | val AUROC 0.8358 | best 0.8415@24
+  ep 42 | loss 0.0641 | val AUROC 0.8375 | best 0.8415@24
+  ep 43 | loss 0.0636 | val AUROC 0.8350 | best 0.8415@24
+  ep 44 | loss 0.0637 | val AUROC 0.8367 | best 0.8415@24
+  ep 45 | loss 0.0633 | val AUROC 0.8338 | best 0.8415@24
+  ep 46 | loss 0.0628 | val AUROC 0.8365 | best 0.8415@24
+  ep 47 | loss 0.0627 | val AUROC 0.8337 | best 0.8415@24
+  ep 48 | loss 0.0625 | val AUROC 0.8338 | best 0.8415@24
+  ep 49 | loss 0.0624 | val AUROC 0.8338 | best 0.8415@24
+  ep 50 | loss 0.0625 | val AUROC 0.8341 | best 0.8415@24
+  ep 51 | loss 0.0620 | val AUROC 0.8344 | best 0.8415@24
+  ep 52 | loss 0.0618 | val AUROC 0.8339 | best 0.8415@24
+  ep 53 | loss 0.0619 | val AUROC 0.8346 | best 0.8415@24
+  ep 54 | loss 0.0618 | val AUROC 0.8338 | best 0.8415@24
+  ep 55 | loss 0.0618 | val AUROC 0.8341 | best 0.8415@24
+  ep 56 | loss 0.0616 | val AUROC 0.8348 | best 0.8415@24
+  ep 57 | loss 0.0617 | val AUROC 0.8346 | best 0.8415@24
+  ep 58 | loss 0.0618 | val AUROC 0.8355 | best 0.8415@24
+  ep 59 | loss 0.0614 | val AUROC 0.8338 | best 0.8415@24
+>> best ep 24 | TEST macro-AUROC = 0.8514 (132/135 classes)

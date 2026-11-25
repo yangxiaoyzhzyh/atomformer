@@ -1,0 +1,41 @@
+Device: cpu
+Variant: full | Mode: monomer | ckpt: model_tgsc_bl_best.pt
+Params: 16,892,035
+C:\Users\yangx\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\torch\nn\modules\transformer.py:529: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\NestedTensorImpl.cpp:182.)
+  output = torch._nested_tensor_from_mask(
+未命中样本: 107/236
+未命中且 gt 在 128 词表: 94
+gt 与某预测词 cosine>=0.90: 0
+gt 与某预测词 cosine>=0.80: 0 (0.0%)
+gt 与某预测词 cosine>=0.70: 2 (2.1%)
+
+最高 cosine 样本（gt, top3, max_cos, 最近词）:
+  fishy  <-  ['spicy', 'fruity', 'floral']  (cos=0.724, 最近=fruity)
+  cheesy  <-  ['sulfurous', 'green', 'meaty']  (cos=0.708, 最近=meaty)
+  fatty  <-  ['sulfurous', 'meaty', 'alliaceous']  (cos=0.699, 最近=meaty)
+  citrus  <-  ['fruity', 'green', 'floral']  (cos=0.694, 最近=fruity)
+  citrus  <-  ['fruity', 'green', 'floral']  (cos=0.694, 最近=fruity)
+  fruity  <-  ['herbal', 'woody', 'citrus']  (cos=0.694, 最近=citrus)
+  fruity  <-  ['sulfurous', 'meaty', 'alliaceous']  (cos=0.688, 最近=meaty)
+  fatty  <-  ['green', 'fruity', 'waxy']  (cos=0.671, 最近=fruity)
+  fatty  <-  ['citrus', 'fruity', 'green']  (cos=0.671, 最近=fruity)
+  fatty  <-  ['green', 'fruity', 'floral']  (cos=0.671, 最近=fruity)
+  fatty  <-  ['spicy', 'caramellic', 'fruity']  (cos=0.671, 最近=fruity)
+  fatty  <-  ['green', 'fruity', 'floral']  (cos=0.671, 最近=fruity)
+  fatty  <-  ['citrus', 'fruity', 'green']  (cos=0.671, 最近=fruity)
+  earthy  <-  ['fruity', 'fatty', 'floral']  (cos=0.671, 最近=fruity)
+  buttery  <-  ['fatty', 'fruity', 'waxy']  (cos=0.668, 最近=fruity)
+
+gt 不在 128 词表的未命中样本首词示例（13 个样本）:
+  conut x2
+  oling x1
+  seaweed x1
+  lavender x1
+  violet x1
+  ocean x1
+  truffle x1
+  umarinic x1
+  fenugreek x1
+  rancid x1
+  malty x1
+  algae x1

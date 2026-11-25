@@ -1,0 +1,73 @@
+Device: cuda
+Loading data...
+Monomer: 3430, Blender: 462781, Total: 466211
+
+==================================================
+GINx3_weighted
+==================================================
+Params: 93,316
+  Ep 0 | loss=0.000647 | Val_AUROC=0.7129(72) | 7s
+  Ep 1 | loss=0.000513 | Val_AUROC=0.7515(72) | 14s
+  Ep 2 | loss=0.000488 | Val_AUROC=0.7879(72) | 20s
+  Ep 3 | loss=0.000476 | Val_AUROC=0.8054(72) | 27s
+  Ep 4 | loss=0.000467 | Val_AUROC=0.7982(72) | 34s
+  Ep 5 | loss=0.000461 | Val_AUROC=0.8200(72) | 40s
+  Ep 6 | loss=0.000455 | Val_AUROC=0.8062(72) | 47s
+  Ep 7 | loss=0.000449 | Val_AUROC=0.8087(72) | 53s
+  Ep 8 | loss=0.000445 | Val_AUROC=0.8108(72) | 60s
+  Ep 9 | loss=0.000442 | Val_AUROC=0.8343(72) | 67s
+  Ep10 | loss=0.000438 | Val_AUROC=0.8273(72) | 74s
+  Ep11 | loss=0.000435 | Val_AUROC=0.8193(72) | 80s
+  Ep12 | loss=0.000433 | Val_AUROC=0.8210(72) | 86s
+  Ep13 | loss=0.000430 | Val_AUROC=0.8365(72) | 93s
+  Ep14 | loss=0.000428 | Val_AUROC=0.8306(72) | 100s
+  Ep15 | loss=0.000426 | Val_AUROC=0.8245(72) | 107s
+  Ep16 | loss=0.000424 | Val_AUROC=0.8390(72) | 114s
+  Ep17 | loss=0.000422 | Val_AUROC=0.8349(72) | 121s
+  Ep18 | loss=0.000420 | Val_AUROC=0.8466(72) | 127s
+  Ep19 | loss=0.000419 | Val_AUROC=0.8322(72) | 135s
+  Ep20 | loss=0.000418 | Val_AUROC=0.8480(72) | 142s
+  Ep21 | loss=0.000416 | Val_AUROC=0.8477(72) | 149s
+  Ep22 | loss=0.000415 | Val_AUROC=0.8384(72) | 156s
+  Ep23 | loss=0.000414 | Val_AUROC=0.8343(72) | 164s
+  Ep24 | loss=0.000413 | Val_AUROC=0.8442(72) | 170s
+  Ep25 | loss=0.000412 | Val_AUROC=0.8490(72) | 177s
+  Ep26 | loss=0.000412 | Val_AUROC=0.8442(72) | 184s
+  Ep27 | loss=0.000411 | Val_AUROC=0.8541(72) | 190s
+  Ep28 | loss=0.000410 | Val_AUROC=0.8529(72) | 197s
+  Ep29 | loss=0.000410 | Val_AUROC=0.8483(72) | 204s
+  Ep30 | loss=0.000409 | Val_AUROC=0.8478(72) | 211s
+  Ep31 | loss=0.000409 | Val_AUROC=0.8497(72) | 218s
+  Ep32 | loss=0.000409 | Val_AUROC=0.8499(72) | 225s
+  Ep33 | loss=0.000409 | Val_AUROC=0.8493(72) | 232s
+  Ep34 | loss=0.000409 | Val_AUROC=0.8495(72) | 239s
+  Ep35 | loss=0.000409 | Val_AUROC=0.8518(72) | 246s
+  Ep36 | loss=0.000410 | Val_AUROC=0.8487(72) | 252s
+  Ep37 | loss=0.000410 | Val_AUROC=0.8500(72) | 260s
+  Ep38 | loss=0.000410 | Val_AUROC=0.8530(72) | 267s
+  Ep39 | loss=0.000410 | Val_AUROC=0.8519(72) | 274s
+  Ep40 | loss=0.000410 | Val_AUROC=0.8525(72) | 281s
+  Ep41 | loss=0.000411 | Val_AUROC=0.8515(72) | 288s
+  Ep42 | loss=0.000411 | Val_AUROC=0.8528(72) | 296s
+  Ep43 | loss=0.000411 | Val_AUROC=0.8410(72) | 303s
+  Ep44 | loss=0.000411 | Val_AUROC=0.8568(72) | 310s
+  Ep45 | loss=0.000412 | Val_AUROC=0.8407(72) | 317s
+  Ep46 | loss=0.000412 | Val_AUROC=0.8417(72) | 325s
+  Ep47 | loss=0.000412 | Val_AUROC=0.8469(72) | 332s
+  Ep48 | loss=0.000413 | Val_AUROC=0.8426(72) | 339s
+  Ep49 | loss=0.000413 | Val_AUROC=0.8413(72) | 346s
+  Ep50 | loss=0.000413 | Val_AUROC=0.8532(72) | 354s
+  Ep51 | loss=0.000413 | Val_AUROC=0.8562(72) | 361s
+  Ep52 | loss=0.000413 | Val_AUROC=0.8454(72) | 369s
+  Ep53 | loss=0.000413 | Val_AUROC=0.8457(72) | 376s
+  Ep54 | loss=0.000413 | Val_AUROC=0.8491(72) | 383s
+  Ep55 | loss=0.000413 | Val_AUROC=0.8513(72) | 390s
+  Ep56 | loss=0.000413 | Val_AUROC=0.8536(72) | 397s
+  Ep57 | loss=0.000413 | Val_AUROC=0.8458(72) | 404s
+  Ep58 | loss=0.000412 | Val_AUROC=0.8305(72) | 411s
+  Ep59 | loss=0.000412 | Val_AUROC=0.8394(72) | 418s
+  >>> GINx3_weighted: best_val=0.8568 test=0.8013
+
+==================================================
+Summary:
+  GINx3_  weighted: val=0.8568 test=0.8013

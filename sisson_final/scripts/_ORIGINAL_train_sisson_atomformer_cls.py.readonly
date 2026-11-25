@@ -1,0 +1,227 @@
+# -*- coding: utf-8 -*-
+"""train_sisson_atomformer_cls.py
+AtomFormer 风格小模型（train_gs_cls.py 同款：GIN×3(64)→proj(256)→TFM×2(nhead4)→mean→Linear）
++ 多标签分类头，在 Sisson **分子级分割**（novel-molecule）数据上训练/评估，
+检验新分子泛化能力。对齐 Sisson 论文协议：BCE 多标签 + macro-AUROC
+（其报告 MPNN-GNN 0.7627 / GIN-GNN 0.7359，74 类协议）。
+
+数据两种协议（--suffix 切换）：
+  ''  : odor-pair/pairing/（CUTOFF=1000 官方代码默认 → 33 类，当前数据快照唯一忠实协议）
+  '74': odor-pair/pairing74/（Top-74 notes，第 74 名频次≈187，对齐论文正文 74 类协议）
+图构建：从 SMILES 用我们 31 维特征重建双分子拼接图（AtomFormer 无边界标准管线）。
+val：train 内随机切 1000 对（seed 42）早停。
+"""
+import argparse, os, sys, random
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch_geometric.loader import DataLoader
+from torch_geometric.data import Data
+from torch_geometric.utils import to_dense_batch, scatter
+from sklearn.metrics import roc_auc_score
+from rdkit import Chem, RDLogger
+RDLogger.DisableLog('rdApp.*')
+
+ap = argparse.ArgumentParser()
+ap.add_argument('--odor-pair-dir', required=True, help='含 pairing/data.py 的 odor-pair 目录')
+ap.add_argument('--pairing-dir', default=None,
+                help='pairing 数据目录（默认 <odor-pair-dir>/pairing；74 类版传 pairing74）')
+ap.add_argument('--suffix', default='',
+                help="数据文件名后缀：''=官方 33 类，'74'=74 类版（trainpairs74.pt 等）")
+ap.add_argument('--epochs', type=int, default=60)
+ap.add_argument('--bsz', type=int, default=64)
+ap.add_argument('--n-val', type=int, default=1000)
+ap.add_argument('--lr', type=float, default=3e-4)
+ap.add_argument('--limit', type=int, default=0,
+                help='冒烟用：仅取前 N 对 train 与 N//4 对 test（0=全部）')
+args = ap.parse_args()
+
+sys.path.insert(0, args.odor_pair_dir)
+import pairing.data  # noqa: F401  注册 PairData 类（unpickle 需要）
+
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+SEED = 42
+torch.manual_seed(SEED); random.seed(SEED); np.random.seed(SEED)
+PAIRING = args.pairing_dir or os.path.join(args.odor_pair_dir, 'pairing')
+print(f'Device: {DEVICE} | pairing: {PAIRING}')
+
+# ── 类数（notes{suffix}.csv）──
+with open(os.path.join(PAIRING, f'notes{args.suffix}.csv'), encoding='utf-8') as f:
+    NOTES = [x.strip() for x in f.read().split(',') if x.strip()]
+N = len(NOTES)
+print(f'Sisson classes: {N}')
+
+# ── 图构建（train_gs_cls.py 同款 31 维特征）──
+FEAT_DIM = 31
+_gc = {}
+
+def smi2g(smi):
+    mol = Chem.MolFromSmiles(smi)
+    if mol is None: return None
+    nf, ei = [], []
+    for a in mol.GetAtoms():
+        nf.append([a.GetAtomicNum() == 6, a.GetAtomicNum() == 7, a.GetAtomicNum() == 8,
+                   a.GetAtomicNum() == 9, a.GetAtomicNum() == 15, a.GetAtomicNum() == 16,
+                   a.GetAtomicNum() == 17, a.GetAtomicNum() == 35, a.GetAtomicNum() == 53,
+                   a.GetFormalCharge() == 1, a.GetFormalCharge() == -1,
+                   a.GetHybridization() == Chem.HybridizationType.SP,
+                   a.GetHybridization() == Chem.HybridizationType.SP2,
+                   a.GetHybridization() == Chem.HybridizationType.SP3,
+                   a.GetIsAromatic(),
+                   a.GetDegree() == 1, a.GetDegree() == 2, a.GetDegree() == 3, a.GetDegree() == 4,
+                   a.GetTotalNumHs() == 0, a.GetTotalNumHs() == 1, a.GetTotalNumHs() == 2,
+                   a.GetTotalNumHs() == 3, a.IsInRing(),
+                   len([b for b in a.GetBonds() if b.GetBondType() == Chem.BondType.DOUBLE]) > 0,
+                   len([b for b in a.GetBonds() if b.GetBondType() == Chem.BondType.TRIPLE]) > 0,
+                   len([b for b in a.GetBonds() if b.GetBondType() == Chem.BondType.AROMATIC]) > 0,
+                   a.GetMass() > 30, a.GetMass() > 60, a.GetMass() > 90, a.GetMass() > 120])
+    for b in mol.GetBonds():
+        i = b.GetBeginAtomIdx(); j = b.GetEndAtomIdx()
+        ei.append([i, j]); ei.append([j, i])
+    if not nf: return None
+    return {'x': np.array(nf, dtype=np.float32), 'ei': np.array(ei, dtype=np.int64).T}
+
+def build_pair(sm_a, sm_b):
+    """双分子拼接图（无边界，AtomFormer 标准输入）"""
+    ax, aei, off = [], [], 0
+    for s in (sm_a, sm_b):
+        if s not in _gc:
+            g = smi2g(s)
+            _gc[s] = g if g else None
+        g = _gc[s]
+        if g is None: return None
+        ax.append(torch.tensor(g['x']).float()[:, :FEAT_DIM])
+        aei.append(torch.tensor(g['ei']) + off)
+        off += g['x'].shape[0]
+    return Data(x=torch.cat(ax), edge_index=torch.cat(aei, dim=1))
+
+# ── 加载 Sisson PairData → (sm_a, sm_b, y) ──
+# 探针确认：data.y 是 stack 的 (n, C)；smiles_s/smiles_t 是 list
+def load_pairs(fname):
+    data, slices = torch.load(fname, weights_only=False)
+    n = data.y.size(0)
+    assert data.y.size(1) == N, f'class mismatch: pt has {data.y.size(1)}, notes.csv has {N}'
+    out = []
+    for i in range(n):
+        y = data.y[i].float()
+        if y.sum() > 0:
+            out.append((data.smiles_s[i], data.smiles_t[i], y))
+    return out
+
+print(f'Loading Sisson trainpairs{args.suffix}.pt ...')
+train_raw = load_pairs(os.path.join(PAIRING, f'trainpairs{args.suffix}.pt'))
+print(f'  train pairs: {len(train_raw)}')
+print(f'Loading Sisson testpairs{args.suffix}.pt ...')
+test_raw = load_pairs(os.path.join(PAIRING, f'testpairs{args.suffix}.pt'))
+print(f'  test pairs : {len(test_raw)}')
+
+if args.limit > 0:
+    train_raw = train_raw[:args.limit]
+    test_raw = test_raw[:max(1, args.limit // 4)]
+    print(f'[smoke] limited to train {len(train_raw)} / test {len(test_raw)}')
+
+# train 随机切 N 对作 val（冒烟时保证 train 至少剩一半）
+idx = list(range(len(train_raw))); random.shuffle(idx)
+n_val = min(args.n_val, max(1, len(train_raw) // 2))
+va_rows = [train_raw[i] for i in idx[:n_val]]
+tr_rows = [train_raw[i] for i in idx[n_val:]]
+print(f'split: train {len(tr_rows)} | val {len(va_rows)} | test {len(test_raw)}')
+
+def make_graphs(rows):
+    out = []
+    for k, (sa, sb, y) in enumerate(rows):
+        d = build_pair(sa, sb)
+        if d is not None:
+            d.lbl = y.unsqueeze(0)
+            out.append(d)
+    return out
+
+print('Building graphs ...')
+tr_d = make_graphs(tr_rows); va_d = make_graphs(va_rows); te_d = make_graphs(test_raw)
+print(f'graphs: train {len(tr_d)} | val {len(va_d)} | test {len(te_d)}')
+
+tr_loader = DataLoader(tr_d, batch_size=args.bsz, shuffle=True)
+va_loader = DataLoader(va_d, batch_size=256)
+te_loader = DataLoader(te_d, batch_size=256)
+
+# ── Model（train_gs_cls.py 同款，输出改 77 类）──
+class GINConv(nn.Module):
+    def __init__(self, dim):
+        super().__init__()
+        self.mlp = nn.Sequential(nn.Linear(dim, dim), nn.BatchNorm1d(dim), nn.ReLU(),
+                                 nn.Linear(dim, dim), nn.BatchNorm1d(dim), nn.ReLU())
+        self.eps = nn.Parameter(torch.zeros(1))
+    def forward(self, x, ei):
+        r, c = ei
+        o = scatter(x[c], r, dim=0, dim_size=x.size(0), reduce='sum')
+        return F.relu(self.mlp((1 + self.eps) * x + o))
+
+class Model(nn.Module):
+    def __init__(self, dim=256, nhead=4, n_layers=2, dropout=0.1):
+        super().__init__()
+        self.pad = nn.ZeroPad2d((0, 64 - FEAT_DIM, 0, 0))
+        self.convs = nn.ModuleList([GINConv(64) for _ in range(3)])
+        self.proj = nn.Linear(64, dim)
+        enc = nn.TransformerEncoderLayer(d_model=dim, nhead=nhead, dim_feedforward=2 * dim,
+                                         batch_first=True, dropout=dropout)
+        self.tfm = nn.TransformerEncoder(enc, n_layers)
+        self.head = nn.Linear(dim, N)
+    def forward(self, x, ei, batch):
+        x = self.pad(x)
+        for c in self.convs: x = c(x, ei)
+        x = self.proj(x)
+        x, m = to_dense_batch(x, batch)
+        x = self.tfm(x, src_key_padding_mask=~m if m is not None else None)
+        x = x[m]
+        x = scatter(x, batch, dim=0, reduce='mean')
+        return self.head(x)
+
+@torch.no_grad()
+def evaluate(model, loader):
+    model.eval()
+    zs, ys = [], []
+    for b in loader:
+        b = b.to(DEVICE)
+        zs.append(model(b.x, b.edge_index, b.batch).cpu())
+        ys.append(b.lbl.cpu())
+    Z = torch.cat(zs).numpy(); Y = torch.cat(ys).numpy()
+    aucs = [roc_auc_score(Y[:, i], Z[:, i]) for i in range(N)
+            if 0 < Y[:, i].sum() < len(Y)]
+    return float(np.mean(aucs)), len(aucs)
+
+m = Model().to(DEVICE)
+print(f'Params: {sum(p.numel() for p in m.parameters()):,}')
+
+epochs, warmup = args.epochs, 3
+opt = torch.optim.Adam(m.parameters(), lr=args.lr)
+sch = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=epochs - warmup)
+ckpt = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                    f'sisson_atomformer_cls{args.suffix}_best.pt')
+
+best_auc, best_ep = -1, -1
+import time; t0 = time.time()
+for ep in range(epochs):
+    if ep < warmup:
+        for pg in opt.param_groups: pg['lr'] = args.lr * (ep + 1) / warmup
+    m.train(); tl = 0
+    for b in tr_loader:
+        b = b.to(DEVICE)
+        z = m(b.x, b.edge_index, b.batch)
+        loss = F.binary_cross_entropy_with_logits(z, b.lbl)
+        opt.zero_grad(); loss.backward(); opt.step()
+        tl += loss.item()
+    if ep >= warmup: sch.step()
+    vauc, _ = evaluate(m, va_loader)
+    if vauc > best_auc:
+        best_auc = vauc; best_ep = ep
+        torch.save(m.state_dict(), ckpt)
+    print(f'ep {ep:2d} | lr {opt.param_groups[0]["lr"]:.1e} | loss {tl/len(tr_loader):.4f} | '
+          f'val AUROC {vauc:.4f} {"★" if vauc >= best_auc and ep == best_ep else ""} '
+          f'(best {best_auc:.4f}@{best_ep}) | {time.time()-t0:.0f}s', flush=True)
+
+m.load_state_dict(torch.load(ckpt, weights_only=True, map_location=DEVICE))
+t_auc, n_auc = evaluate(m, te_loader)
+print(f'\n>> best ep {best_ep} | val {best_auc:.4f} | TEST macro-AUROC = {t_auc:.4f} '
+      f'({n_auc}/{N} classes)')
+print(f'>> Sisson 论文参考（同分割同指标）: MPNN-GNN 0.7627±0.0047 | GIN-GNN 0.7359±0.0222')

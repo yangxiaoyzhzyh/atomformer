@@ -1,0 +1,69 @@
+Device: cuda
+Combine: sum
+Classes: 128
+Monomer: 3430
+Blender train: 462839 | Total: 466269
+Params: 92,291
+Ep 0 | lr=3.3e-04 | loss=0.000665 | Val_AUROC=0.7301(72grp) ★ | 17s
+Ep 1 | lr=6.7e-04 | loss=0.000508 | Val_AUROC=0.7911(72grp) ★ | 33s
+Ep 2 | lr=1.0e-03 | loss=0.000486 | Val_AUROC=0.8422(72grp) ★ | 49s
+Ep 3 | lr=1.0e-03 | loss=0.000473 | Val_AUROC=0.8367(72grp)  | 65s
+Ep 4 | lr=9.9e-04 | loss=0.000463 | Val_AUROC=0.8542(72grp) ★ | 82s
+Ep 5 | lr=9.8e-04 | loss=0.000455 | Val_AUROC=0.8603(72grp) ★ | 98s
+Ep 6 | lr=9.6e-04 | loss=0.000450 | Val_AUROC=0.8523(72grp)  | 114s
+Ep 7 | lr=9.3e-04 | loss=0.000445 | Val_AUROC=0.8614(72grp) ★ | 136s
+Ep 8 | lr=9.0e-04 | loss=0.000441 | Val_AUROC=0.8706(72grp) ★ | 172s
+Ep 9 | lr=8.7e-04 | loss=0.000437 | Val_AUROC=0.8775(72grp) ★ | 205s
+Ep10 | lr=8.3e-04 | loss=0.000433 | Val_AUROC=0.8775(72grp)  | 230s
+Ep11 | lr=7.9e-04 | loss=0.000431 | Val_AUROC=0.8841(72grp) ★ | 247s
+Ep12 | lr=7.5e-04 | loss=0.000428 | Val_AUROC=0.8847(72grp) ★ | 263s
+Ep13 | lr=7.0e-04 | loss=0.000426 | Val_AUROC=0.8876(72grp) ★ | 279s
+Ep14 | lr=6.5e-04 | loss=0.000423 | Val_AUROC=0.8735(72grp)  | 295s
+Ep15 | lr=6.0e-04 | loss=0.000421 | Val_AUROC=0.8785(72grp)  | 312s
+Ep16 | lr=5.5e-04 | loss=0.000420 | Val_AUROC=0.8763(72grp)  | 328s
+Ep17 | lr=5.0e-04 | loss=0.000419 | Val_AUROC=0.8816(72grp)  | 345s
+Ep18 | lr=4.5e-04 | loss=0.000417 | Val_AUROC=0.8846(72grp)  | 361s
+Ep19 | lr=4.0e-04 | loss=0.000416 | Val_AUROC=0.8867(72grp)  | 377s
+Ep20 | lr=3.5e-04 | loss=0.000414 | Val_AUROC=0.8751(72grp)  | 410s
+Ep21 | lr=3.0e-04 | loss=0.000414 | Val_AUROC=0.8858(72grp)  | 447s
+Ep22 | lr=2.5e-04 | loss=0.000412 | Val_AUROC=0.8889(72grp) ★ | 483s
+Ep23 | lr=2.1e-04 | loss=0.000411 | Val_AUROC=0.8799(72grp)  | 508s
+Ep24 | lr=1.7e-04 | loss=0.000411 | Val_AUROC=0.8859(72grp)  | 524s
+Ep25 | lr=1.3e-04 | loss=0.000410 | Val_AUROC=0.8849(72grp)  | 540s
+Ep26 | lr=9.5e-05 | loss=0.000409 | Val_AUROC=0.8892(72grp) ★ | 556s
+Ep27 | lr=6.7e-05 | loss=0.000408 | Val_AUROC=0.8925(72grp) ★ | 572s
+Ep28 | lr=4.3e-05 | loss=0.000408 | Val_AUROC=0.8840(72grp)  | 589s
+Ep29 | lr=2.4e-05 | loss=0.000408 | Val_AUROC=0.8887(72grp)  | 603s
+Ep30 | lr=1.1e-05 | loss=0.000407 | Val_AUROC=0.8854(72grp)  | 618s
+Ep31 | lr=2.7e-06 | loss=0.000407 | Val_AUROC=0.8860(72grp)  | 635s
+Ep32 | lr=0.0e+00 | loss=0.000407 | Val_AUROC=0.8867(72grp)  | 655s
+Ep33 | lr=2.7e-06 | loss=0.000407 | Val_AUROC=0.8872(72grp)  | 673s
+Ep34 | lr=1.1e-05 | loss=0.000408 | Val_AUROC=0.8864(72grp)  | 690s
+Ep35 | lr=2.4e-05 | loss=0.000407 | Val_AUROC=0.8886(72grp)  | 707s
+Ep36 | lr=4.3e-05 | loss=0.000407 | Val_AUROC=0.8855(72grp)  | 723s
+Ep37 | lr=6.7e-05 | loss=0.000407 | Val_AUROC=0.8863(72grp)  | 739s
+Ep38 | lr=9.5e-05 | loss=0.000407 | Val_AUROC=0.8859(72grp)  | 755s
+Ep39 | lr=1.3e-04 | loss=0.000408 | Val_AUROC=0.8865(72grp)  | 772s
+Ep40 | lr=1.7e-04 | loss=0.000408 | Val_AUROC=0.8877(72grp)  | 788s
+Ep41 | lr=2.1e-04 | loss=0.000409 | Val_AUROC=0.8846(72grp)  | 804s
+Ep42 | lr=2.5e-04 | loss=0.000409 | Val_AUROC=0.8879(72grp)  | 820s
+Ep43 | lr=3.0e-04 | loss=0.000408 | Val_AUROC=0.8865(72grp)  | 836s
+Ep44 | lr=3.5e-04 | loss=0.000409 | Val_AUROC=0.8843(72grp)  | 852s
+Ep45 | lr=4.0e-04 | loss=0.000409 | Val_AUROC=0.8894(72grp)  | 868s
+Ep46 | lr=4.5e-04 | loss=0.000410 | Val_AUROC=0.8810(72grp)  | 884s
+Ep47 | lr=5.0e-04 | loss=0.000409 | Val_AUROC=0.8779(72grp)  | 900s
+Ep48 | lr=5.5e-04 | loss=0.000410 | Val_AUROC=0.8797(72grp)  | 916s
+Ep49 | lr=6.0e-04 | loss=0.000410 | Val_AUROC=0.8735(72grp)  | 932s
+Ep50 | lr=6.5e-04 | loss=0.000410 | Val_AUROC=0.8913(72grp)  | 949s
+Ep51 | lr=7.0e-04 | loss=0.000411 | Val_AUROC=0.8727(72grp)  | 965s
+Ep52 | lr=7.5e-04 | loss=0.000411 | Val_AUROC=0.8861(72grp)  | 981s
+Ep53 | lr=7.9e-04 | loss=0.000410 | Val_AUROC=0.8754(72grp)  | 997s
+Ep54 | lr=8.3e-04 | loss=0.000411 | Val_AUROC=0.8726(72grp)  | 1014s
+Ep55 | lr=8.7e-04 | loss=0.000411 | Val_AUROC=0.8836(72grp)  | 1030s
+Ep56 | lr=9.0e-04 | loss=0.000410 | Val_AUROC=0.8901(72grp)  | 1046s
+Ep57 | lr=9.3e-04 | loss=0.000410 | Val_AUROC=0.8848(72grp)  | 1062s
+Ep58 | lr=9.6e-04 | loss=0.000410 | Val_AUROC=0.8805(72grp)  | 1076s
+Ep59 | lr=9.8e-04 | loss=0.000410 | Val_AUROC=0.8828(72grp)  | 1091s
+
+Best val AUROC: 0.8925 @ Ep27
+Final test AUROC: 0.8561 (108 groups)
