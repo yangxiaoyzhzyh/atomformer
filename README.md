@@ -74,8 +74,6 @@ Xiao Yang, Guanghao Song, Feiyu Li, Zihan Xu（Xinqiao Flavors & Fragrances (Zhe
 > 目录名 `heatvap_32dim/` 沿用早期命名，其中权重对应**混合焓 ΔH_mix** 的 32 维特征模型；
 > 汽化焓 ΔH_vap 的 5 折结果由 `scripts/train_ChemixhubTasks.py --task heat_vap` 重新训练（§6.9）。
 
-MON 的 GIN-only / TFM-only 变体权重同为早期数据，未随仓库分发。
-
 ## 4. 训练配置（补充 Table S1）
 
 | 超参 | 气味 | MON | ΔHvap |
@@ -194,8 +192,6 @@ python scripts/eval_per_group_31dim.py   # 108 组 per-group AUROC，逐组写�
 ```bash
 # 论文配置（Table S1：lr 1e-4 / batch 256 / warmup 3 / 60 epochs，为脚本默认值）
 python scripts/train_mon.py --data-root data/MON --folds 0 1 2 3 4 --variant full
-python scripts/train_mon.py --data-root data/MON --folds 0 --variant gin_only   # 早期数据
-python scripts/train_mon.py --data-root data/MON --folds 0 --variant tfm_only   # 早期数据
 ```
 
 5 折结果 R 0.898 ± 0.033 / MAE 4.534 ± 0.539，见 `logs/mon_best5fold.log`。`search_mon.py`、
